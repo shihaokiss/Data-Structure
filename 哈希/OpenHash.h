@@ -55,6 +55,7 @@ namespace HashBucket
 				{
 					_Insert(cur->_key,cur->_value);
 					cur = cur->_next;
+
 				}
 			}
 		}
