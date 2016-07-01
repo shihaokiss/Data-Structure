@@ -309,22 +309,4 @@ namespace TwiceExplore
 		else
 			cout << "[" << "Î´¶¨Òå" << "] : " << "" << endl;
 	}
-
-
-	void Test()
-	{
-		Hash<int, string, HashFuner> HASHTABLE(10);
-		HashTableNode<int, string> Node[10] = { { 0, "aa" }, { 0, "bb" },
-		{ 0, "cc" }, { 0, "dd" },
-		{ 0, "ee" }, { 0, "ff" } };
-		for (int i = 0; i < 6; ++i)
-		{
-			HASHTABLE._Insert(Node[i]);
-		}
-		HASHTABLE._Show();
-		HASHTABLE._Delete(0);
-		HASHTABLE._Delete(0);
-		cout << endl;
-		HASHTABLE._Show();
-	}
 }

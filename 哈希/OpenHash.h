@@ -21,8 +21,8 @@ namespace HashBucket
 	public:
 		Hash(size_t size)
 		{
-			int index = _GetIndexFun(size);
-			_Vector.resize(_PrimeList[index]);
+			int Size = _GetIndexFun(size);
+			_Vector.resize(Size);
 			_size = 0;
 		}
 
@@ -39,7 +39,7 @@ namespace HashBucket
 		{
 			for (int i = 0; i < _PrimeSize; ++i)
 			if (_PrimeList[i] > capacity)
-				return i;
+				return _PrimeList[i];
 		}
 	};
 
@@ -48,16 +48,18 @@ namespace HashBucket
 	{
 		if (_size == _Vector.size())   //负荷因子为 1 ，需要扩容了
 		{
+			int new_size = _GetIndexFun(_Vector.size());
+			Hash NewHash(new_size);
 			for (int i = 0; i < _Vector.size(); ++i)
 			{
 				Node* cur = _Vector[i];
 				while (cur)
 				{
-					_Insert(cur->_key,cur->_value);
+					NewHash._Insert(cur->_key,cur->_value);
 					cur = cur->_next;
-
 				}
 			}
+			swap(_Vector, NewHash._Vector);  //将哈希表重置
 		}
 		else
 		{
@@ -65,6 +67,7 @@ namespace HashBucket
 			int index = HashFun()(key) % _Vector.size();
 			tmp->_next = _Vector[index];
 			_Vector[index] = tmp;
+			_size++;
 			return true;
 		}
 	}
@@ -86,6 +89,7 @@ namespace HashBucket
 					else
 						prev->_next = cur->_next;
 					delete cur;
+					_size--;
 					return true;
 				}
 				else
@@ -138,25 +142,4 @@ namespace HashBucket
 		}
 	}
 
-	void Test()
-	{
-		Hash<int, string> HASHTABLE(10);
-		
-		HASHTABLE._Insert(0,"aa");
-		HASHTABLE._Insert(0, "bb");
-		HASHTABLE._Insert(0, "cc");
-		HASHTABLE._Insert(0, "dd");
-		HASHTABLE._Insert(0, "ee");
-		HASHTABLE._Insert(2, "ff");
-		HASHTABLE._Insert(20, "gg");
-		HASHTABLE._Insert(200, "hh");
-
-		Node<int,string> data1(0, "aa");
-		Node<int, string> data2(200, "hh");
-		HASHTABLE._Show();
-		HASHTABLE._Delete(data1);
-		HASHTABLE._Delete(data2);
-		cout << endl;
-		HASHTABLE._Show();
-	}
 }
